@@ -1,44 +1,143 @@
-# AI-Based Stock Price Prediction and Market Analysis System
+# 📈 AI Stock Price Prediction and Market Analysis System
 
-A moderate academic web application with three modules: stock market analysis, AI next-day price prediction, and watchlist/model analytics. It uses FastAPI, TensorFlow/Keras, scikit-learn, pandas, NumPy, yfinance, plain HTML/CSS/JavaScript, and Chart.js.
+An AI-powered web application that predicts the next stock closing price using an LSTM neural network and combines the prediction with technical indicators to provide market analysis, prediction confidence, and directional signals.
 
-## Setup
+## 🚀 Live Demo
 
-```powershell
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-```
+🌐 **Live Application:**  
+https://stock-price-prediction-1-3u3u.onrender.com
 
-The exporter follows `Stock_Price_Prediction (1).ipynb`: its AAPL date range, Close-only scaler/sequences, indicators, chronological split, architecture, and training settings are documented in `docs/MODEL.md`.
+📚 **API Documentation:**  
+https://stock-price-prediction-1-3u3u.onrender.com/docs
 
-## Train and run
+---
 
-```powershell
-python ml/train_model.py
-python -m uvicorn api:app --reload
-```
+## 📌 Project Overview
 
-Open `http://127.0.0.1:8000/` or serve `frontend/` with VS Code Live Server. Swagger is available at `/docs`.
+The **AI Stock Price Prediction and Market Analysis System** is a machine-learning-based application designed to analyze historical stock market data and predict the next closing price.
 
-## API
+The system uses an **LSTM (Long Short-Term Memory)** neural network to learn patterns from historical stock prices.
 
-- `GET /health`
-- `GET /stocks/{ticker}`
-- `GET /stocks/{ticker}/history?period=1y`
-- `GET /stocks/{ticker}/indicators`
-- `POST /predict` with `{"ticker":"AAPL"}`
-- `GET /watchlist`, `POST /watchlist`, `DELETE /watchlist/{ticker}`
-- `GET /analytics`
+It also combines the prediction with technical indicators such as:
 
-## Testing
+- RSI
+- MACD
+- Moving Averages
+- Historical price trends
 
-```powershell
-pytest
-```
+The system generates:
 
-Tests cover sequence construction and inference shape. Live Yahoo Finance, TensorFlow training, and browser checks require network/dependencies and are intentionally not claimed here.
+- Current stock price
+- Predicted next closing price
+- Expected percentage change
+- Market direction
+- Trend
+- Prediction confidence
+- Prediction range
+- Technical indicator signals
+- AI-generated market analysis
 
-## Structure
+> ⚠️ This project is intended for educational and research purposes. Stock predictions are estimates and should not be considered financial advice.
 
-`api.py` owns routes; `services/` owns market data, indicators, and watchlist storage; `ml/` owns training, evaluation, and inference; `frontend/` contains the five pages; `docs/` records architecture, model assumptions, and limitations. Run the notebook's multi-stock export cell to create one model and scaler per ticker. The API never applies AAPL artifacts to another stock.
+---
+
+## ✨ Key Features
+
+### 🤖 AI Stock Prediction
+Uses an LSTM neural network to predict the next stock closing price.
+
+### 📊 Technical Analysis
+Analyzes technical indicators including:
+
+- RSI
+- MACD
+- Moving Average
+
+### 📈 Market Direction
+
+The system classifies the predicted movement as:
+
+- `UP`
+- `DOWN`
+- `NEUTRAL`
+
+### 🎯 Prediction Confidence
+
+Provides an estimated confidence level based on historical model prediction errors.
+
+### 📉 Prediction Range
+
+Displays an estimated range around the predicted price to represent uncertainty.
+
+### 🧠 Market Analysis
+
+Combines:
+
+- Model prediction
+- Price movement
+- Technical indicators
+- Historical prediction errors
+
+to generate a concise market analysis.
+
+### ⭐ Watchlist
+
+Users can add and remove stocks from their watchlist.
+
+### 📊 Historical Data
+
+The application retrieves historical stock market data and displays it through the web interface.
+
+### 🌐 REST API
+
+FastAPI provides endpoints for:
+
+- Stock prices
+- Historical data
+- Technical indicators
+- Predictions
+- Watchlist management
+- Health monitoring
+
+### 💻 Web Dashboard
+
+A browser-based interface allows users to interact with the prediction system without directly using the API.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                 ┌──────────────────────┐
+                 │      User / Web UI   │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │       FastAPI        │
+                 │       Backend        │
+                 └──────────┬───────────┘
+                            │
+             ┌──────────────┼──────────────┐
+             │              │              │
+             ▼              ▼              ▼
+       ┌───────────┐  ┌────────────┐  ┌──────────────┐
+       │ Market    │  │ Technical  │  │ Watchlist    │
+       │ Data      │  │ Indicators │  │ Service      │
+       └─────┬─────┘  └─────┬──────┘  └──────────────┘
+             │              │
+             └───────┬──────┘
+                     ▼
+              ┌──────────────┐
+              │ LSTM Model   │
+              │ TensorFlow   │
+              └──────┬───────┘
+                     │
+                     ▼
+             ┌─────────────────┐
+             │ Market Analysis │
+             └────────┬────────┘
+                      │
+                      ▼
+                Prediction &
+                Analysis Result
