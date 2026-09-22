@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+tensorflow
+scikit-learn
+pandas
+numpy
+yfinance
+ta
+python-dotenv
+httpx
+pytest
