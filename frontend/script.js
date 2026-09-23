@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "";
 const $ = (selector) => document.querySelector(selector);
 const money = (value) => value == null ? "—" : `$${Number(value).toFixed(2)}`;
 const charts = {};
