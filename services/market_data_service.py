@@ -16,21 +16,41 @@ def _ticker_symbol(ticker):
 
 def _download(symbol, period):
     key = (symbol, period)
+
     cached = _CACHE.get(key)
     if cached and monotonic() - cached[0] < CACHE_TTL_SECONDS:
         return cached[1].copy()
+
     try:
-        data = yf.download(symbol, period=period, auto_adjust=False, progress=False, threads=False)
+        data = yf.download(
+            symbol,
+            period=period,
+            auto_adjust=False,
+            progress=False,
+            threads=False,
+        )
     except Exception as exc:
         raise RuntimeError("Market data is temporarily unavailable.") from exc
+
     if data.empty:
         raise LookupError(f"No market data found for ticker {symbol}.")
+
     if hasattr(data.columns, "levels"):
         data.columns = data.columns.get_level_values(0)
-    data = data.reset_index()
-    _CACHE[key] = (monotonic(), data)
-    return data.copy()
 
+    data = data.reset_index()
+
+    # Remove rows containing missing market values
+    data = data.dropna(
+        subset=["Open", "High", "Low", "Close", "Volume"]
+    )
+
+    if data.empty:
+        raise LookupError(f"No valid market data found for ticker {symbol}.")
+
+    _CACHE[key] = (monotonic(), data)
+
+    return data.copy()
 
 def get_stock_data(ticker, period="1y"):
     return _download(_ticker_symbol(ticker), period)
